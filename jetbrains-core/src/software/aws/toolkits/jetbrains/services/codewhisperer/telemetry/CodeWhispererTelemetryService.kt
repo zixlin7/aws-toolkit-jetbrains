@@ -159,10 +159,14 @@ class CodeWhispererTelemetryService {
         } else null
 
         val language = requestContext.fileContextInfo.programmingLanguage
-        val shouldIncludeClassifier = language is CodeWhispererJava
+
+        val shouldIncludeClassifier = language is CodeWhispererJava ||
+            (language.isClassifierSupported() && CodeWhispererAutoTriggerService.getInstance().isClassifierGroup())
+
         val classifierResult = if (shouldIncludeClassifier) {
             requestContext.triggerTypeInfo.automatedTriggerType.calculationResult
         } else null
+
         val classifierThreshold = if (shouldIncludeClassifier) {
             CodeWhispererAutoTriggerService.getThreshold(language)
         } else null

@@ -27,7 +27,7 @@ class CodeWhispererTypedHandler : TypedHandlerDelegate() {
 
         val language = CodeWhispererLanguageManager.getInstance().getLanguage(psiFiles)
 
-        if (language is CodeWhispererJava) {
+        if (CodeWhispererAutoTriggerService.getInstance().isClassifierGroup() || language is CodeWhispererJava) {
             CodeWhispererAutoTriggerService.getInstance().tryInvokeAutoTrigger(editor, CodeWhispererAutomatedTriggerType.Classifier(null))
         } else {
             triggerOnIdle = CodeWhispererAutoTriggerService.getInstance().tryInvokeAutoTrigger(editor, CodeWhispererAutomatedTriggerType.IdleTime())
